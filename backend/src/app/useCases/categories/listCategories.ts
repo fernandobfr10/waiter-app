@@ -10,7 +10,6 @@ export async function listCategories(req: Request, res: Response) {
 
   } catch (error) {
     console.error(error)
-
-    res.status(500)
+    res.sendStatus(500)
   }
 }
