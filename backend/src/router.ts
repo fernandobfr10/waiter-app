@@ -5,10 +5,13 @@ import multer from 'multer'
 
 import { listCategories } from './app/useCases/categories/listCategories'
 import { createCategory } from './app/useCases/categories/createCategory'
+import { listProductsByCategory } from './app/useCases/categories/listProductsByCategory'
 
 import { listProducts } from './app/useCases/products/listProducts'
 import { createProduct } from './app/useCases/products/createProduct'
-import { listProductsByCategory } from './app/useCases/categories/listProductsByCategory'
+
+import { listOrders } from './app/useCases/orders/listOrders'
+import { createOrder } from './app/useCases/orders/createOrder'
 
 export const router = Router()
 
@@ -39,14 +42,10 @@ router.post('/products', upload.single('image'), createProduct)
 router.get('/categories/:categoryId/products', listProductsByCategory)
 
 // List Orders
-router.get('/orders', (request, response) => {
-  response.send('Ok')
-})
+router.get('/orders', listOrders)
 
 // Create Order
-router.post('/orders', (request, response) => {
-  response.send('Ok')
-})
+router.post('/orders', createOrder)
 
 // Change Order Status
 router.patch('/orders/:orderId', (request, response) => {

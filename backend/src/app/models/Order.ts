@@ -21,11 +21,11 @@ export const Order = model('Order', new Schema({
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'Product'
+      },
+      quantity: {
+        type: Number,
+        default: 1
       }
     }]
   },
-  quantity: {
-    type: Number,
-    default: 1
-  }
 }))
