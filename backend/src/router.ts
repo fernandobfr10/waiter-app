@@ -9,6 +9,7 @@ import { listProductsByCategory } from './app/useCases/categories/listProductsBy
 
 import { listProducts } from './app/useCases/products/listProducts'
 import { createProduct } from './app/useCases/products/createProduct'
+import { deleteProduct } from './app/useCases/products/deleteProduct'
 
 import { listOrders } from './app/useCases/orders/listOrders'
 import { createOrder } from './app/useCases/orders/createOrder'
@@ -23,7 +24,7 @@ const upload = multer({
       callback(null, path.resolve(__dirname, '..', 'uploads'))
     },
     filename(req, file, callback) {
-      callback(null, `${Date.now()}-${file.originalname}.png`)
+      callback(null, `${Date.now()}-${file.originalname}`)
     }
   })
 })
@@ -39,6 +40,9 @@ router.get('/products', listProducts)
 
 // Create Product
 router.post('/products', upload.single('image'), createProduct)
+
+// Delete Product
+router.delete('/products/:productId', deleteProduct)
 
 // Get Products by Category
 router.get('/categories/:categoryId/products', listProductsByCategory)
