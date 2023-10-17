@@ -11,10 +11,13 @@ import { formatCurrency } from "../../utils/formatCurrency";
 interface OrderModalProps {
   visible: boolean;
   order: Order | null;
+  isLoading: boolean;
   onClose: () => void;
+  onCancelOrder: () => Promise<void>;
+  onChangeOrderStatus: () => void;
 }
 
-export function OrderModal({ visible, order, onClose }: OrderModalProps) {
+export function OrderModal({ visible, order, isLoading, onClose, onCancelOrder, onChangeOrderStatus }: OrderModalProps) {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -33,7 +36,7 @@ export function OrderModal({ visible, order, onClose }: OrderModalProps) {
     return null
   }
 
-  const totalPrice = order.products.reduce((acumulator, { product, quantity}) => {
+  const totalPrice = order.products.reduce((acumulator, { product, quantity }) => {
     return acumulator += (product.price * quantity)
   }, 0)
 
@@ -51,14 +54,14 @@ export function OrderModal({ visible, order, onClose }: OrderModalProps) {
           <small>Status do Pedido</small>
           <div>
             <span>
-              {order.status === 'WAITING' && '🕒' }
-              {order.status === 'IN_PRODUCTION' && '👩‍🍳' }
-              {order.status === 'DONE' && '✅' }
+              {order.status === 'WAITING' && '🕒'}
+              {order.status === 'IN_PRODUCTION' && '👩‍🍳'}
+              {order.status === 'DONE' && '✅'}
             </span>
             <strong>
-              {order.status === 'WAITING' && 'Fila de Espera' }
-              {order.status === 'IN_PRODUCTION' && 'Em Preparação' }
-              {order.status === 'DONE' && 'Pronto!' }
+              {order.status === 'WAITING' && 'Fila de Espera'}
+              {order.status === 'IN_PRODUCTION' && 'Em Preparação'}
+              {order.status === 'DONE' && 'Pronto!'}
             </strong>
           </div>
         </div>
@@ -94,14 +97,21 @@ export function OrderModal({ visible, order, onClose }: OrderModalProps) {
         </OrderDetails>
 
         <Actions>
-            <button type="button" className="primary">
-              <span>👩‍🍳</span>
-              <strong>Iniciar Produção</strong>
+          {order.status !== 'DONE' && (
+            <button type="button" className="primary" disabled={isLoading} onClick={onChangeOrderStatus}>
+              <span>
+                {order.status === 'WAITING' && '👩‍🍳'}
+                {order.status === 'IN_PRODUCTION' && '✅'}
+              </span>
+              <strong>
+                {order.status === 'WAITING' && 'Iniciar Produção'}
+                {order.status === 'IN_PRODUCTION' && 'Concluir Pedido'}
+              </strong>
             </button>
-
-            <button type="button" className="secondary">
-              <strong>Cancelar pedido</strong>
-            </button>
+          )}
+          <button type="button" className="secondary" onClick={onCancelOrder} disabled={isLoading}>
+            <strong>Cancelar pedido</strong>
+          </button>
         </Actions>
       </ModalBody>
     </Overlay>

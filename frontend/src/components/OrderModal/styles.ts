@@ -118,6 +118,11 @@ export const Actions = styled.footer`
   gap: 16px;
   margin-top: 32px;
 
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
   .primary {
     background-color: #333;
     border: 0;
